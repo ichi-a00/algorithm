@@ -32,7 +32,7 @@ def struggle(x, y, color)
             next
         end
 
-        #既に見たところはスキップ　※他の色はスキップのところで弾かれるから
+        #既に見たところはスキップ　※他の色はスキップのところで弾かれるから要らんね
         if $grid[next_y][next_x] == "@" then
             next
         end       
