@@ -12,3 +12,6 @@ https://qiita.com/ophhdn/items/fb10c932d44b18d12656
 
 4.最大面積
 http://algorithms.blog55.fc2.com/blog-entry-133.html
+
+5.優先度付キュー
+https://docs.python.org/ja/3/library/heapq.html
