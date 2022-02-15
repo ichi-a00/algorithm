@@ -4,13 +4,19 @@ n = input_line.split[0].to_i
 $h = input_line.split[1].to_i
 $w = input_line.split[2].to_i
 
+if n==1 then
+    p 0
+else
+
 town = []
 dist = []
+all_town = []
 
 for i in 0...n
     input_line = gets
     town[i] = [input_line.split[0].to_i, input_line.split[1].to_i]
     dist[i] = Array.new(n, Float::INFINITY)
+    all_town[i] = i
 end
 
 #2街間の距離をループ対応で測る
@@ -27,7 +33,8 @@ def town_distance(from, to)
 end
 
 total_dist = 0
-visited_town = []
+visited_town = [0, 0]
+mindist = Float::INFINITY
 
 for i in 0...n
     for j in 0...n
@@ -35,23 +42,54 @@ for i in 0...n
             next
         end
         dist[i][j] = town_distance(town[i], town[j])
+        
+        if mindist > dist[i][j] then
+            mindist = dist[i][j]
+            visited_town[0] = i
+            visited_town[1] = j
+        end
     end
-    
-    if visited_town.include?(i) && visited_town.include?(dist[i].index(dist[i].min)) then
-        p "skip:  #{i}, #{dist[i].index(dist[i].min)}"
-        next
-    else
-        visited_town.push(i)
-        visited_town.push(dist[i].index(dist[i].min))
-        p "#{i}, #{dist[i].index(dist[i].min)}"
-        total_dist += dist[i].min
-    end
-    
-    visited_town.uniq!
 end
 
-p visited_town.sort
+# p visited_town
+# p mindist
 
-# dist.each do |d|
-#     p d
-# end
+total_dist = mindist
+
+not_visited_town = all_town - visited_town
+
+#p not_visited_town
+
+while visited_town.size < n do
+    #start_time = Time.now()
+    
+    # mindist = Float::INFINITY
+    index = -1
+    
+    visited_town.each do |town|
+        not_visited_town.each do |nv|
+            # if mindist > dist[nv][town] then
+            #     mindist = dist[nv][town]
+            #     index = nv
+            # end
+        end
+    end
+
+    #p mindist
+    #p visited_town
+    
+    visited_town.push(index)
+    # total_dist += mindist
+    #not_visited_town.delete(index)
+    not_visited_town.pop()
+    #p not_visited_town
+    
+    #end_time = Time.now()
+    #p (end_time - start_time)*n*n*13
+end
+
+
+#p visited_town
+p total_dist
+
+end
