@@ -15,7 +15,7 @@ all_town = []
 for i in 0...n
     input_line = gets
     town[i] = [input_line.split[0].to_i, input_line.split[1].to_i]
-    dist[i] = Array.new(n, Float::INFINITY)
+    dist[i] = Array.new(n, 0)
     all_town[i] = i
 end
 
@@ -35,7 +35,9 @@ end
 total_dist = 0
 visited_town = [0, 0]
 mindist = Float::INFINITY
+dist_index = []
 
+#いったん距離を保管しとく（いらんかも）
 for i in 0...n
     for j in 0...n
         if i==j then
@@ -53,43 +55,33 @@ end
 
 # p visited_town
 # p mindist
-
 total_dist = mindist
 
-not_visited_town = all_town - visited_town
+#p total_dist
 
-#p not_visited_town
-
-while visited_town.size < n do
-    #start_time = Time.now()
-    
-    # mindist = Float::INFINITY
-    index = -1
-    
-    visited_town.each do |town|
-        not_visited_town.each do |nv|
-            # if mindist > dist[nv][town] then
-            #     mindist = dist[nv][town]
-            #     index = nv
-            # end
-        end
-    end
-
-    #p mindist
-    #p visited_town
-    
-    visited_town.push(index)
-    # total_dist += mindist
-    #not_visited_town.delete(index)
-    not_visited_town.pop()
-    #p not_visited_town
-    
-    #end_time = Time.now()
-    #p (end_time - start_time)*n*n*13
+#各町への、ここまででの最短距離
+dp=[]
+for i in 0...n
+    dp[i] = [dist[visited_town[0]][i], dist[visited_town[1]][i]].min
 end
 
+#だんだんdpが0000000になってく
+(n-2).times do 
+    #距離0をのぞいた最小距離の街番号
+    nearest_town = dp.index((dp-[0]).min)
+    
+    #その街への最短距離
+    mindist = (dp-[0]).min
+    total_dist += mindist
+    
+    #その街をルーラ追加したときの、他の街への最短距離更新
+    for i in 0...n
+        dp[i] = [dp[i], dist[nearest_town][i]].min
+    end
+    
+    #p dp
+end
 
-#p visited_town
 p total_dist
 
 end
