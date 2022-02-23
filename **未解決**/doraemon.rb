@@ -21,23 +21,34 @@ for i in 0...n
     end
 end
 
-epochs = to_visit.permutation.to_a
+epochs = []
 
-#epochs = [[1, 3, 4, 2]]
+#xor
+if (n % 2 == 0) ^ (safety[n-1] == 1) then
+    #tf || ft　寄り道なし
+    epochs = to_visit.permutation.to_a
+else
+    #tt || ff　どこかに寄り道しないと戻れない
+    for i in 1...n
+        to_visit.push(i)
+        epochs += to_visit.permutation.to_a
+        to_visit.pop
+    end
+end
 
+#p epochs
 max_cost = Float::INFINITY
 
-route = []
 tmp_safety = []
+route = []
     
 epochs.each do |epoch|
+
     tmp = n
     cost = 0
     for k in 0...n
         tmp_safety[k] = safety[k]
     end
-    
-    #p epoch
     
     epoch.each do |e|
         #p "now: #{tmp}, to: #{e}"
@@ -50,9 +61,12 @@ epochs.each do |epoch|
             if tmp > e then
                 #遡行
                 cost += cb
-            else
+            elsif tmp < e then
                 #未来
                 cost += cf
+            else
+                cost = Float::INFINITY
+                break
             end
         end
         
@@ -64,35 +78,14 @@ epochs.each do |epoch|
         tmp = e
     end
     
-    #最後にback to the futureできるか
-    if tmp_safety[n-1] == -1 then
-        max_ex_cost = Float::INFINITY
-        for i in 1..n-1
-            ex_cost = 0
-            if i != tmp && tmp_safety[i-1] == 1 then
-                if i < tmp then
-                    ex_cost += cb
-                else
-                    ex_cost += cf
-                end
-            end
-            
-            if max_ex_cost > cost then
-                max_ex_cost = ex_cost
-                ex_epoch = i
-            end
-        end
-        
-        cost += max_ex_cost
-        epoch.push(ex_epoch)
-    end
-    
-    #p cost
-    
     if max_cost > cost then
         max_cost = cost
         route = epoch
     end
+    
+    #p epoch
+    #p cost
+
 end
 
 puts [n, route, n].flatten.join(" ")
