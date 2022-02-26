@@ -1,4 +1,3 @@
-
 input_line = gets.to_i
 $n = input_line
 
@@ -8,22 +7,11 @@ k = [input_line.split(" ")[0].to_i, input_line.split(" ")[1].to_i]
 input_line = gets
 c = [input_line.split(" ")[0].to_i, input_line.split(" ")[1].to_i]
 
-
-def wall_dist(dist, at)
-    if dist < 0 then
-        wd = $n-1-at
-    else
-        wd = at
-    end
-    return wd
-end
-
-
 count = 0
 
 while 0 do
     
-    p "俺のターン #{k}"
+    #p "俺のターン #{k}"
     d = [[k[0]-1,k[1]-1], [k[0],k[1]-1], [k[0]+1,k[1]-1],
         [k[0]-1,k[1]], [k[0]+1,k[1]],
         [k[0]-1,k[1]+1], [k[0],k[1]+1], [k[0]+1,k[1]+1]]
@@ -53,8 +41,6 @@ while 0 do
             tmp_k = [next_x, next_y]
             min_dist = dist
             tmp_dist = x_dist.abs+y_dist.abs
-            #wall_x = wall_dist(x_dist, next_x)
-            #wall_y = wall_dist(y_dist, next_y)
         elsif dist == min_dist then
             if (x_dist.abs+y_dist.abs) < tmp_dist then
                 tmp_k = [next_x, next_y]
@@ -65,7 +51,7 @@ while 0 do
     end
     
     k = tmp_k
-    p "俺はターンエンド #{k}"
+    #p "俺はターンエンド #{k}"
     
     count += 1
     
@@ -73,7 +59,7 @@ while 0 do
         break
     end
     
-    p "お前のターン #{c}"
+    #p "お前のターン #{c}"
     d = [[c[0]-1,c[1]-1],[c[0]+1,c[1]-1],[c[0]-1,c[1]+1],[c[0]+1,c[1]+1]]
     
     max_dist = 0
@@ -84,8 +70,8 @@ while 0 do
             next
         end
         
-        x_dist = next_x-c[0]
-        y_dist = next_y-c[1]
+        x_dist = next_x-k[0]
+        y_dist = next_y-k[1]
         
         if x_dist.abs==y_dist.abs then
             dist = x_dist.abs
@@ -97,9 +83,7 @@ while 0 do
             tmp_c = [next_x, next_y]
             max_dist = dist
             tmp_dist = x_dist.abs+y_dist.abs
-            #wall_x = wall_dist(x_dist, next_x)
-            #wall_y = wall_dist(y_dist, next_y)
-        elsif dist == min_dist then
+        elsif dist == max_dist then
             if (x_dist.abs+y_dist.abs) > tmp_dist then
                 tmp_c = [next_x, next_y]
                 tmp_dist = x_dist.abs+y_dist.abs
@@ -108,11 +92,8 @@ while 0 do
     
     end
     c = tmp_c
-    p "お前もエンド #{c}"
+    #p "お前もエンド #{c}"
     
 end
-    
-    
-    p "----"
-    p count
 
+p count
